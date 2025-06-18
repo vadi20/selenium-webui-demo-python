@@ -3,21 +3,26 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
-from utils.config import Config
-import logging
+from utils.custom_waits import element_has_css_property
+from utils.logger import get_logger
 
 class BasePage:
-    def __init__(self, driver):
+    def __init__(self, driver, config):
+        #self.config = ConfigParser()
+        #self.config.read('config/config.ini')
         self.driver = driver
-        self.wait = WebDriverWait(driver, Config.EXPLICIT_WAIT)
-        self.logger = logging.getLogger(__name__)
+        self.config = config
+        self.timeout = config.get('DEFAULT', 'implicit_wait')
+        self.wait = WebDriverWait(driver,  self.timeout)
+        self.logger = get_logger(self.__class__.__name__)
+     
 
     # Core Interaction Methods
     def click(self, locator):
         self.logger.info(f"Clicking on element: {locator}")
         self.wait.until(EC.element_to_be_clickable(locator)).click()
 
-    def type(self, locator, text):
+    def send_keys(self, locator, text):
         self.logger.info(f"Typing '{text}' in element: {locator}")
         element = self.wait.until(EC.visibility_of_element_located(locator))
         element.clear()
@@ -27,12 +32,14 @@ class BasePage:
         self.logger.info(f"Getting text from element: {locator}")
         return self.wait.until(EC.visibility_of_element_located(locator)).text
 
-    def wait_till_not_visible(self, locator, timeout=Config.EXPLICIT_WAIT):
-        WebDriverWait(self.driver, timeout).until(EC.invisibility_of_element_located(locator))
+    def is_not_visible(self, locator):
+        self.logger.info(f"Checking non visibility of element: {locator}")
+        WebDriverWait(self.driver, self.timeout).until(EC.invisibility_of_element_located(locator))
 
-    def is_displayed(self, locator, timeout=Config.EXPLICIT_WAIT):
+    def is_visible(self, locator):
         try:
-            WebDriverWait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
+            self.logger.info(f"Checking visibility of element: {locator}")
+            WebDriverWait(self.driver, self.timeout).until(EC.visibility_of_element_located(locator))
             return True
         except TimeoutException:
             return False
@@ -57,10 +64,8 @@ class BasePage:
             return text
         except TimeoutException:
             raise NoSuchElementException("No alert present")
-
-    # Navigation
-    def get_current_url(self):
-        return self.driver.current_url
-
-    def refresh_page(self):
-        self.driver.refresh()
+    
+    def wait_for_css_property(self, locator, property_name, property_value):
+        self.logger.info(f"Waiting for {property_name}={property_value} on element: {locator}")
+        return self.wait.until(
+            element_has_css_property(locator, property_name, property_value))
