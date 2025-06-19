@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from pages.base_page import BasePage
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+from utils.product_navigator import ProductNavigator
 import time
 
 class HomePage(BasePage):
@@ -81,3 +81,7 @@ class HomePage(BasePage):
     
     def select_default_product(self):
         self.click(self.SELECT_DEFAULT_PRODUCT)
+
+    def find_and_select_product(self, product_name):
+        navigator = ProductNavigator(self.driver)
+        return navigator.find_and_select_product(product_name)

@@ -12,12 +12,11 @@ class TestOrder:
     def class_setup(self, setup):
         self.logger = get_logger(f"test.{self.__class__.__name__}")
 
-        self.home_page = HomePage(self.driver,self.config)
-        self.product_page = ProductPage(self.driver,self.config)
-        self.cart_page = CartPage(self.driver,self.config)
-        self.order_page = CheckoutPage(self.driver,self.config)
+        self.home_page = HomePage(self.driver)
+        self.product_page = ProductPage(self.driver)
+        self.cart_page = CartPage(self.driver)
+        self.order_page = CheckoutPage(self.driver)
         
-        # Add a product to cart and go to order page
         self.home_page.navigate_to_home()
         self.home_page.select_category("Phones")
         self.home_page.select_default_product()
@@ -27,7 +26,6 @@ class TestOrder:
     
     def test_order_form_validation(self):
         self.logger.info("===== TESTING ORDER FORM VALIDATION =====")
-        # Try to submit empty form
         self.order_page.click_purchase()
         alert_text = self.home_page.get_alert_text()
         assert "Please fill out Name and Creditcard" in alert_text

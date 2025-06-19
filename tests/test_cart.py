@@ -11,11 +11,10 @@ class TestCart:
     def class_setup(self, setup):
         self.logger = get_logger(f"test.{self.__class__.__name__}")
 
-        self.home_page = HomePage(self.driver, self.config)
-        self.product_page = ProductPage(self.driver,self.config)
-        self.cart_page = CartPage(self.driver,self.config)
+        self.home_page = HomePage(self.driver)
+        self.product_page = ProductPage(self.driver)
+        self.cart_page = CartPage(self.driver)
         
-        # Add a product to cart for some tests
         self.home_page.navigate_to_home()
         self.home_page.select_category("Phones")
         self.home_page.select_default_product()
@@ -38,7 +37,6 @@ class TestCart:
         initial_count = self.cart_page.get_cart_items_count()
         self.cart_page.delete_item(0)
         
-        # Wait for item to be removed
         self.home_page.wait.until(lambda d: self.cart_page.get_cart_items_count() < initial_count)
         
         assert self.cart_page.get_cart_items_count() == 0
@@ -49,8 +47,19 @@ class TestCart:
         self.home_page.click_cart_menu()
         self.cart_page.click_place_order()
         
-        # Verify order form is displayed
         assert self.cart_page.is_visible(self.cart_page.ITEM_NAMES)
         assert self.cart_page.is_visible(self.cart_page.PLACE_ORDER_BUTTON)
         
         self.logger.info("Place order flow test passed")
+
+
+class TestCartAdvanced:
+    @pytest.fixture(autouse=True)
+    def class_setup(self, setup):
+        self.logger = get_logger(f"test.{self.__class__.__name__}")
+
+        self.home_page = HomePage(self.driver)
+        self.product_page = ProductPage(self.driver)
+        self.cart_page = CartPage(self.driver)
+        
+        self.home_page.navigate_to_home()

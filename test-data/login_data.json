@@ -1,0 +1,26 @@
+{
+  "login_test_cases": [
+    {
+      "test_name": "valid_login",
+      "username": "demotest006",
+      "password": "demotest006",
+      "expected_result": "welcome_message",
+      "expected_text": "Welcome demotest006",
+      "include_in_logout_test": true
+    },
+    {
+      "test_name": "invalid_login_wrong_password",
+      "username": "testuser",
+      "password": "wrongpass",
+      "expected_result": "alert_message",
+      "expected_text": "Wrong password"
+    },
+    {
+      "test_name": "invalid_login_wrong_username",
+      "username": "invaliduserdddasa",
+      "password": "test123",
+      "expected_result": "alert_message",
+      "expected_text": "User does not exist"
+    }
+  ]
+}

@@ -5,14 +5,16 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from utils.custom_waits import element_has_css_property
 from utils.logger import get_logger
+from utils.config_manager import app_config
+
+from selenium.webdriver.common.by import By
 
 class BasePage:
-    def __init__(self, driver, config):
-        #self.config = ConfigParser()
-        #self.config.read('config/config.ini')
+
+    def __init__(self, driver):
+        self.config = app_config.config
         self.driver = driver
-        self.config = config
-        self.timeout = config.get('DEFAULT', 'implicit_wait')
+        self.timeout = self.config.get('DEFAULT', 'implicit_wait')
         self.wait = WebDriverWait(driver,  self.timeout)
         self.logger = get_logger(self.__class__.__name__)
      
@@ -69,3 +71,13 @@ class BasePage:
         self.logger.info(f"Waiting for {property_name}={property_value} on element: {locator}")
         return self.wait.until(
             element_has_css_property(locator, property_name, property_value))
+    
+    def find_element_by_text(self, text, element_type='*'):
+        return self.driver.find_element(By.XPATH, f"//{element_type}[contains(text(), '{text}')]")
+
+    def is_element_present(self, locator):
+        try:
+            self.driver.find_element(*locator)
+            return True
+        except:
+            return False

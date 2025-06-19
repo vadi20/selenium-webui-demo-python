@@ -22,7 +22,7 @@ class ProductPage(BasePage):
     
     def add_to_cart(self):
         self.click(self.ADD_TO_CART_BTN)
-        return self.get_alert_text()  # Returns "Product added" message
+        return self.get_alert_text() 
 
     def navigate_back_to_home(self):
         from .home_page import HomePage

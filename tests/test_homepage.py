@@ -11,14 +11,14 @@ class TestHomePage:
 
     def test_home_page_title(self):
         self.logger.info("===== TESTING HOME PAGE TITLE =====")
-        home_page = HomePage(self.driver,self.config)
+        home_page = HomePage(self.driver)
         home_page.navigate_to_home()
         assert "STORE" in self.driver.title
         self.logger.info("Home page title test passed")
     
     def test_navigation_menu_items(self):
         self.logger.info("===== TESTING NAVIGATION MENU ITEMS =====")
-        home_page = HomePage(self.driver,self.config)
+        home_page = HomePage(self.driver)
         home_page.navigate_to_home()
         
         assert home_page.is_visible(home_page.HOME_MENU)
@@ -32,7 +32,7 @@ class TestHomePage:
     
     def test_carousel_functionality(self):
         self.logger.info("===== TESTING CAROUSEL FUNCTIONALITY =====")
-        home_page = HomePage(self.driver,self.config)
+        home_page = HomePage(self.driver)
         home_page.navigate_to_home()
         
         initial_index = home_page.get_active_carousel_item_index()
@@ -48,7 +48,7 @@ class TestHomePage:
     
     def test_categories_section(self):
         self.logger.info("===== TESTING CATEGORIES SECTION =====")
-        home_page = HomePage(self.driver,self.config)
+        home_page = HomePage(self.driver)
         home_page.navigate_to_home()
         
         assert "CATEGORIES" in home_page.get_categories_title()

@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 
 def setup_logging():
-    """Setup logging configuration"""
+    #Setup logging configuration
     logs_dir = Path('logs')
     if not logs_dir.exists():
         os.makedirs(logs_dir)
@@ -13,8 +13,7 @@ def setup_logging():
     logging.captureWarnings(True)
 
 def get_logger(name):
-    """Get a logger instance with the given name"""
-    # Ensure logging is configured
+    #Get a logger instance with the given name
     if not logging.getLogger().handlers:
         setup_logging()
     
