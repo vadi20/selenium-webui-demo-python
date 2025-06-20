@@ -1,0 +1,34 @@
+{
+  "test_cases": [
+    {
+      "name": "two_products_same_category",
+      "products": [
+        {
+          "name": "Samsung galaxy s6",
+          "category": "Phones"
+        },
+        {
+          "name": "Nexus 6",
+          "category": "Phones"
+        }
+      ]
+    },
+    {
+      "name": "three_products_different_categories",
+      "products": [
+        {
+          "name": "Sony vaio i5",
+          "category": "Laptops"
+        },
+        {
+          "name": "Apple monitor 24",
+          "category": "Monitors"
+        },
+        {
+          "name": "Nokia lumia 1520",
+          "category": "Phones"
+        }
+      ]
+    }
+  ]
+}
