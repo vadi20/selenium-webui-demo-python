@@ -22,7 +22,6 @@ class DriverManager:
             driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))
         else:
             raise ValueError(f"Unsupported browser: {browser}")
-        
         driver.maximize_window()
         driver.implicitly_wait(implicit_wait)
         return driver

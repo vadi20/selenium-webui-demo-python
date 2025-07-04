@@ -7,10 +7,10 @@ class CartPage(BasePage):
     CART_SUCCESS = ( By.XPATH,"//tr[@class='success']/td[2]")#(By.XPATH, "//tbody/tr[@class='success']")
     CART_ITEMS = (By.XPATH, "//tbody[@id='tbodyid']/tr")
 
-    ITEM_NAMES = (By.XPATH, "//td[2]")
-    ITEM_PRICES = (By.XPATH, "//td[3]")
+    #ITEM_NAMES = (By.XPATH, "//td[2]")
+    #ITEM_PRICES = (By.XPATH, "//td[3]")
 
-    CART_LIST = (By.ID, "tbodyid")
+    #CART_LIST = (By.ID, "tbodyid")
     ITEM_NAME = (By.XPATH, "./td[2]")
     ITEM_PRICE = (By.XPATH, "./td[3]")
 
@@ -35,6 +35,7 @@ class CartPage(BasePage):
         delete_buttons = self.driver.find_elements(*self.DELETE_LINKS)
         if index < len(delete_buttons):
             delete_buttons[index].click()
+            self.wait.until(EC.staleness_of(delete_buttons[index]))
     
     def get_total_price(self):
         return float(self.get_text(self.TOTAL_PRICE))
@@ -71,7 +72,7 @@ class CartPage(BasePage):
     def get_all_cart_items(self):
         items = []
         #rows = self.driver.find_elements(*self.CART_ITEMS)
-        self.wait.until(EC.presence_of_element_located(self.CART_LIST))
+        self.wait.until(EC.presence_of_element_located(self.CART_ITEMS))
         rows =  self.driver.find_elements(*self.CART_ITEMS)
 
         self.logger.info(f"Found {len(rows)} items in cart")
@@ -94,11 +95,8 @@ class CartPage(BasePage):
 
     def delete_all_items(self):
         delete_buttons = self.driver.find_elements(*self.DELETE_LINKS)
-        if len(delete_buttons) > 0 :
-            while delete_buttons:
-                delete_buttons[0].click()
-                self.wait.until(EC.staleness_of(delete_buttons[0]))
-                delete_buttons = self.driver.find_elements(*self.DELETE_LINKS)
+        for index in range(len(delete_buttons)):
+           self.delete_item(index)
         self.logger.info("Deleted all items from cart")
 
     def get_displayed_total(self):

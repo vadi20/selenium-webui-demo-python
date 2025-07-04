@@ -99,3 +99,4 @@ class TestCartAdvanced:
         self.cart_page.validate_cart_contents(expected_items)
         
         self.logger.info(f"Successfully validated cart with {len(expected_items)} products")
+        self.cart_page.delete_all_items()
